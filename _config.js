@@ -9,4 +9,3 @@ config.mongoURI = {
 module.exports = config;
 
 
-mongodb+srv://Joseph:<password>@testcluster.1djsdy4.mongodb.net/?retryWrites=true&w=majority
