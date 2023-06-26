@@ -13,6 +13,12 @@ pipeline {
                  slackSend channel: 'joseph_IP1', color: 'good', message: 'Git Clone'
             }
         }
+        stage('Check Node.js and npm') {
+            steps {
+                sh 'node -v'
+                sh 'npm -v'
+                }
+        }
         stage('Install Dependancies') {
             steps {
                 echo 'Running npm install'
@@ -28,11 +34,9 @@ pipeline {
         stage('Deploy to Heroku'){
             steps{
                 echo 'Deploying to heroku...'
-
-                 slackSend channel: 'joseph_IP1', color: 'good', message: 'Deploying App to Heroku - Job Name - ${JOB_NAME} | Build number ${BUILD_NUMBER} | link ${APP_LINK}'
-
-                withCredentials([usernameColonPassword(credentialsId: 'heroku', variable: "HEROKU_CREDENTIALS")]){
-                    sh 'git push https://${HEROKU_CREDENTIALS}@https://git.heroku.com/rocky-plateau-63232.git master'
+                slackSend channel:'joseph_IP1' color:'good', message:'Deploying App to Heroku - Job Name - ${JOB_NAME} | Build number ${BUILD_NUMBER} | link ${APP_LINK}`
+                withCredentials([usernameColonPassword(credentialsId: 'heroku', variable: 'HEROKU_CREDENTIALS' )]){ 
+                    sh 'git push https://${HEROKU_CREDENTIALS}@git.heroku.com/rocky-plateau-63232.git master'
                 }
             }
         }        
@@ -40,11 +44,11 @@ pipeline {
     
     post {
         success {
-            slackSend(channel: 'joseph_IP1', color: 'good', message: "Gallery Application deployment successful. Job Name - ${JOB_NAME} | Build number ${BUILD_NUMBER} | link ${APP_LINK}")
+            slackSend(channel:'joseph_IP1', color:'good', message:"Gallery Application deployment successful. Job Name - ${JOB_NAME} | Build number ${BUILD_NUMBER} | link ${APP_LINK}")
         }
 
         failure {
-            slackSend(channel: 'joseph_IP1', color: 'danger', message: "Gallery Application deployment failed. Job Name - ${JOB_NAME} | Build number ${BUILD_NUMBER}")
+            slackSend(channel:'joseph_IP1', color:'danger', message:"Gallery Application deployment failed. Job Name - ${JOB_NAME} | Build number ${BUILD_NUMBER}")
         }
     }
 }
