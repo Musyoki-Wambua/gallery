@@ -18,6 +18,14 @@ pipeline {
         stage('Run Tests'){
             echo 'Run npm run test'
             sh 'npm run test'
+        }
+        stage('Deploy to Heroku'){
+            steps{
+                echo 'Deploying to heroku...'
+                withCredentials([usernameColonPassword(credentialsId: 'heroku', variable: "HEROKU_CREDENTIALS")]){
+                    sh 'git push https://${HEROKU_CREDENTIALS}@https://git.heroku.com/rocky-plateau-63232.git master'
+                }
+            }
         }        
     }
 }
