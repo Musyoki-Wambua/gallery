@@ -6,6 +6,7 @@ pipeline {
             steps {
                 echo 'Cloning Repository'
                 git 'https://github.com/Musyoki-Wambua/gallery'
+                 slackSend channel: 'joseph_IP1', color: 'good', message: 'Git Clone'
             }
         }
         stage('Install Dependancies') {
