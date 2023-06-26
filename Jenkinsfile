@@ -1,5 +1,7 @@
 pipeline {
     agent any
+
+     tools {nodejs "node"}
     
     environment {
         APP_LINK = 'https://rocky-plateau-63232-d97169abfda4.herokuapp.com/ '
