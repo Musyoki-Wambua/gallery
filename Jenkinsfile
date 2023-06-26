@@ -15,9 +15,11 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage('Run Tests'){
-            echo 'Run npm run test'
-            sh 'npm run test'
+        sstage('Run Tests') {
+            steps {
+                echo 'Run npm run test'
+                sh 'npm run test'
+            }
         }
         stage('Deploy to Heroku'){
             steps{
