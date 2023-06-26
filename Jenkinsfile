@@ -6,7 +6,7 @@ pipeline {
     }
 
     stages {
-        stage('CLone Repository'){ 
+        stage('Clone Repository'){ 
             steps {
                 echo 'Cloning Repository'
                 git 'https://github.com/Musyoki-Wambua/gallery'
@@ -19,7 +19,7 @@ pipeline {
                 sh 'npm install'
             }
         }
-        sstage('Run Tests') {
+        stage('Run Tests') {
             steps {
                 echo 'Run npm run test'
                 sh 'npm run test'
@@ -30,10 +30,21 @@ pipeline {
                 echo 'Deploying to heroku...'
 
                  slackSend channel: 'joseph_IP1', color: 'good', message: 'Deploying App to Heroku - Job Name - ${JOB_NAME} | Build number ${BUILD_NUMBER} | link ${APP_LINK}'
+
                 withCredentials([usernameColonPassword(credentialsId: 'heroku', variable: "HEROKU_CREDENTIALS")]){
                     sh 'git push https://${HEROKU_CREDENTIALS}@https://git.heroku.com/rocky-plateau-63232.git master'
                 }
             }
         }        
+    }
+    
+    post {
+        success {
+            slackSend(channel: 'joseph_IP1', color: 'good', message: "Gallery Application deployment successful. Job Name - ${JOB_NAME} | Build number ${BUILD_NUMBER} | link ${APP_LINK}")
+        }
+
+        failure {
+            slackSend(channel: 'joseph_IP1', color: 'danger', message: "Gallery Application deployment failed. Job Name - ${JOB_NAME} | Build number ${BUILD_NUMBER}")
+        }
     }
 }
