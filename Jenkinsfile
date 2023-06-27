@@ -36,7 +36,7 @@ pipeline {
         stage('Deploy to Heroku'){
             steps{
                 echo 'Deploying to heroku...'
-                slackSend channel:'joseph_IP1' color:'good', message:'Deploying App to Heroku - Job Name - ${JOB_NAME} | Build number ${BUILD_NUMBER} | link ${APP_LINK}`
+                slackSend channel:'joseph_IP1' color:'good', message:'Deploying App to Heroku - Job Name - ${JOB_NAME} | Build number ${BUILD_NUMBER} | link ${APP_LINK}'
                 withCredentials([usernameColonPassword(credentialsId: 'heroku', variable: 'HEROKU_CREDENTIALS' )]){ 
                     sh 'git push https://${HEROKU_CREDENTIALS}@git.heroku.com/rocky-plateau-63232.git master'
                 }
